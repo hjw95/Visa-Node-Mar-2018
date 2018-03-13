@@ -1,0 +1,11 @@
+<h1>Tasks</h1>
+<hr>
+<a href="/tasks/new">Create New</a>
+<ol>
+	{{#each tasks}}
+		<li>
+			<span>{{this.name}}</span>
+			<span> <a href="/tasks/details/{{this.id}}">...</a>
+		</li>
+	{{/each}}
+</ol>
