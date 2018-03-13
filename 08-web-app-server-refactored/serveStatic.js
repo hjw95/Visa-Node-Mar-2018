@@ -8,19 +8,21 @@ function isStatic(resource){
 	return staticExtns.indexOf(extn) !== -1;	
 }
 
-module.exports = function(req, res, next){
-	var resource = path.join(__dirname, req.urlObj.pathname === '/' ? 'index.html' : req.urlObj.pathname);
-	if (isStatic(resource)){
-		if (!fs.existsSync(resource)){
-			res.statusCode = 404;
-			res.end();
-			return next();
-		}
-		var stream = fs.createReadStream(resource).pipe(res);
-		stream.on('end', function(){
+module.exports = function(staticResourcePath){
+	return function(req, res, next){
+		var resource = path.join(staticResourcePath, req.urlObj.pathname === '/' ? 'index.html' : req.urlObj.pathname);
+		if (isStatic(resource)){
+			if (!fs.existsSync(resource)){
+				res.statusCode = 404;
+				res.end();
+				return next();
+			}
+			var stream = fs.createReadStream(resource).pipe(res);
+			stream.on('end', function(){
+				next();
+			});
+		} else {
 			next();
-		});
-	} else {
-		next();
-	}
-};
+		}
+	};
+}
