@@ -4,7 +4,7 @@ var querystring = require('querystring'),
 module.exports = function(req, res, next){
 	var urlObj = req.urlObj;
   	if (urlObj.pathname === '/calculator' && req.method === 'GET'){
-		var queryData = querystring.parse(urlObj.query);
+		var queryData = req.queryData;
 		var op = queryData.op,
 			n1 = parseInt(queryData.n1),
 			n2 = parseInt(queryData.n2);
