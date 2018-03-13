@@ -16,15 +16,8 @@ module.exports = function(req, res, next){
 			res.end();
 			return next();
 		}
-		//fs.createReadStream(resource).pipe(res);
-		var stream = fs.createReadStream(resource);
-		stream.on('data', function(chunk){
-			console.log('[@serveStatic - serving data to the response]')
-			res.write(chunk);
-		});
+		var stream = fs.createReadStream(resource).pipe(res);
 		stream.on('end', function(){
-			console.log('[@serveStatic - ending response]')
-			res.end();
 			next();
 		});
 	} else {
