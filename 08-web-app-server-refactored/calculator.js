@@ -12,6 +12,4 @@ var calculator = {
 		return x / y;
 	}
 };
-
-console.log('[@calculator] calculator -> ', calculator);
 module.exports = calculator;
