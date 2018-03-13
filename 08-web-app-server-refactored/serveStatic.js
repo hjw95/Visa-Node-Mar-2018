@@ -8,13 +8,13 @@ function isStatic(resource){
 	return staticExtns.indexOf(extn) !== -1;	
 }
 
-module.exports = function(req, res){
+module.exports = function(req, res, next){
 	var resource = path.join(__dirname, req.urlObj.pathname === '/' ? 'index.html' : req.urlObj.pathname);
 	if (isStatic(resource)){
 		if (!fs.existsSync(resource)){
 			res.statusCode = 404;
 			res.end();
-			return;
+			return next();
 		}
 		//fs.createReadStream(resource).pipe(res);
 		var stream = fs.createReadStream(resource);
@@ -25,6 +25,9 @@ module.exports = function(req, res){
 		stream.on('end', function(){
 			console.log('[@serveStatic - ending response]')
 			res.end();
+			next();
 		});
+	} else {
+		next();
 	}
 };
